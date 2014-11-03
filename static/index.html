@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<table>
+	<tr><td>ID</td><td>分类</td><td>标题</td><td>责任人</td><td>方式</td><td>主题人物</td><td>主题地点</td><td>来源</td></tr>
+
+</table>
+
+<script>
+	tp = "<tr><td><a href='http://query.clcn.net.cn/GJAndST/gjct3.asp?WXID=[ID]' target='_blank'>查看</a></td><td>[CLASSIFIER]</td><td>[TITLE]</td><td>[AUTHOR]</td><td>[METHOD]</td><td>[PERSON]</td><td>[LOCATION]</td><td>[SOURCE]</td></tr>";
+	tb = $('table');
+	mcp = {'dj.html': '道教', 'fj.html': '佛教', 'fej.html': '风景', 'zw.html': '植物',
+		   'dw.html': '动物', 'rw.html': '人物', 'jz.html': '建筑', 'xq.html': '戏曲',
+		   'xs.html': '小说'};
+	$.get('/list?', function(data) {
+		data = JSON.parse(data);
+		window.data = data;
+		l = data.length;
+		for (var i = 0; i < l; ++i) {
+			var tps = tp;
+			var m = data[i];
+			m['CLASSIFIER'] = mcp[m['CLASSIFIER']];
+			for(var k in m) {
+				tps = tps.replace('[' + k + ']', m[k]);
+			}
+			tb.append(tps);
+		}
+	});
+</script>
+</body>
+</html>
